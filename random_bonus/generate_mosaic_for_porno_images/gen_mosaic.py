@@ -11,7 +11,7 @@ FEATURE_MAPS = 'eltwise_stage3_block2'
 FC_LAYER = 'fc_nsfw'
 
 SHORT_EDGE = 320
-MOSAIC_RANGE = [5, 15]
+#MOSAIC_RANGE = [5, 15]
 
 #caffe.set_mode_cpu()
 net = caffe.Net(DEPLOY_FILE, WEIGHTS_FILE, caffe.TEST)
@@ -42,10 +42,11 @@ for i, filename in enumerate(filenames):
     net.blobs['data'].reshape(1, 3, transformed_image.shape[1], transformed_image.shape[2])
     net.blobs['data'].data[...] = transformed_image
 
-    mosaic_size = np.random.random_integers(MOSAIC_RANGE[0], MOSAIC_RANGE[1]+1, 1)
-    scale_mosaic = 1 / float(mosaic_size)
-    mosaic_image = cv2.resize(image, (0, 0), fx=scale_mosaic, fy=scale_mosaic)
-    mosaic_image = cv2.resize(mosaic_image, (width, height), interpolation=cv2.INTER_NEAREST)
+    #mosaic_size = np.random.random_integers(MOSAIC_RANGE[0], MOSAIC_RANGE[1]+1, 1)
+    #scale_mosaic = 1 / float(mosaic_size)
+    #mosaic_image = cv2.resize(image, (0, 0), fx=scale_mosaic, fy=scale_mosaic)
+    #mosaic_image = cv2.resize(mosaic_image, (width, height), interpolation=cv2.INTER_NEAREST)
+    mosaic_image = np.zeros((height,width,3), np.uint8)
 
     net.forward()
     feature_maps = net.blobs[FEATURE_MAPS].data[0]
